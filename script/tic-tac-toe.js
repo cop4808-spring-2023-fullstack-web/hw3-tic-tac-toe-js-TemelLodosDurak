@@ -69,6 +69,13 @@ function checkWin(){
             oWins++;
             document.getElementById("ow").innerHTML = "O Wins: " + oWins;
         }
+        const alertList = document.querySelectorAll('.alert')
+        if(currentPlayer == "X"){
+            document.getElementById("alert").innerHTML = "PLAYER X WINS!"
+        }else{
+            document.getElementById("alert").innerHTML = "COMPUTER WINS!"
+        }
+        
         return roundWon;
     }
 
@@ -79,6 +86,7 @@ function checkWin(){
         statusDisplay.style.color = "rgb(251,100,204)";
         draws++;
         document.getElementById("d").innerHTML = "Draws: " + draws;
+        document.getElementById("alert").innerHTML = "IT'S A DRAW!"
         return roundDraw;
     }
     return false
