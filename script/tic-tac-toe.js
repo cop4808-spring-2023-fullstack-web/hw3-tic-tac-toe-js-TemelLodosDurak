@@ -64,8 +64,10 @@ function checkWin(){
         statusDisplay.style.color = "rgb(251,100,204)";
         if(currentPlayer == 'X'){
             xWins++;
+            document.getElementById("xw").innerHTML = "X Wins: " + xWins;
         }else{
             oWins++;
+            document.getElementById("ow").innerHTML = "O Wins: " + oWins;
         }
         return roundWon;
     }
@@ -76,6 +78,7 @@ function checkWin(){
         gameActive = false;
         statusDisplay.style.color = "rgb(251,100,204)";
         draws++;
+        document.getElementById("d").innerHTML = "Draws: " + draws;
         return roundDraw;
     }
     return false
