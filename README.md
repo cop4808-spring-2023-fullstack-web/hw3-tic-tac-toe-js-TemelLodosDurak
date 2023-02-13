@@ -1,5 +1,5 @@
 Name: Temel Lodos Durak
-Z-Number: Z2367216
+Z-Number: Z23672116
 
 # TIC-TAC-TOE
 
