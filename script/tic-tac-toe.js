@@ -1,5 +1,8 @@
 const statusDisplay = document.querySelector('.status');
 let currentPlayer = decideTurn()
+let xWins = 0
+let oWins = 0
+let draws = 0
 let gameActive = true;
 
 let gameState = ["", "", "", "", "", "", "", "", ""];
@@ -48,6 +51,9 @@ function checkWin(){
         }
         if (a === b && b === c) {
             roundWon = true;
+            document.getElementById(winCondition[0]).style.color = "blue"
+            document.getElementById(winCondition[1]).style.color = "blue"
+            document.getElementById(winCondition[2]).style.color = "blue"
             break
         }
     }
@@ -56,6 +62,11 @@ function checkWin(){
         statusDisplay.innerHTML = winningMessage();
         gameActive = false;
         statusDisplay.style.color = "rgb(251,100,204)";
+        if(currentPlayer == 'X'){
+            xWins++;
+        }else{
+            oWins++;
+        }
         return roundWon;
     }
 
@@ -64,6 +75,7 @@ function checkWin(){
         statusDisplay.innerHTML = drawMessage();
         gameActive = false;
         statusDisplay.style.color = "rgb(251,100,204)";
+        draws++;
         return roundDraw;
     }
     return false
@@ -125,6 +137,7 @@ function handleRestartGame() {
     statusDisplay.style.color = "rgb(65, 65, 65)";
     statusDisplay.innerHTML = currentPlayerTurn();
     document.querySelectorAll('.cell').forEach(cell => cell.innerHTML = "");
+    document.querySelectorAll('.cell').forEach(cell => cell.style.color = "black"); //Setting the highlighted tiles back to black
     if(currentPlayer == 'O')
         handleComputerMove();
 }
