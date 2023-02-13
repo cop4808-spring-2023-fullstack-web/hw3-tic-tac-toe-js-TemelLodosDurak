@@ -1,7 +1,7 @@
 const statusDisplay = document.querySelector('.status');
-
+let currentPlayer = decideTurn()
 let gameActive = true;
-let currentPlayer = "X";
+
 let gameState = ["", "", "", "", "", "", "", "", ""];
 
 const winningMessage = () => `Player ${currentPlayer} has won!`;
@@ -21,6 +21,11 @@ const winningConditions = [
     [2, 4, 6]
 ];
 
+if(currentPlayer == 'O')
+    handleComputerMove();
+
+
+//This handles the updating of the board of who played
 function handleCellPlayed(clickedCell, clickedCellIndex) {
     gameState[clickedCellIndex] = currentPlayer;
     clickedCell.innerHTML = currentPlayer;
@@ -31,7 +36,7 @@ function handlePlayerChange() {
     statusDisplay.innerHTML = currentPlayerTurn();
 }
 
-function handleResultValidation() {
+function checkWin(){
     let roundWon = false;
     for (let i = 0; i <= 7; i++) {
         const winCondition = winningConditions[i];
@@ -51,7 +56,7 @@ function handleResultValidation() {
         statusDisplay.innerHTML = winningMessage();
         gameActive = false;
         statusDisplay.style.color = "rgb(251,100,204)";
-        return;
+        return roundWon;
     }
 
     let roundDraw = !gameState.includes("");
@@ -59,16 +64,52 @@ function handleResultValidation() {
         statusDisplay.innerHTML = drawMessage();
         gameActive = false;
         statusDisplay.style.color = "rgb(251,100,204)";
-        return;
+        return roundDraw;
+    }
+    return false
+}
+
+//Iterates through each win condition and compares it to the game state.
+//If there is a match with all same values of X or O. Round has been won.
+function handleResultValidation() {
+    checkWin()
+
+    if(gameActive){
+        handlePlayerChange();
+        handleComputerMove();
+    }
+}
+function handleComputerMove(){
+    pickComputerMove();
+    if(!checkWin())
+        handlePlayerChange();
+}
+
+function pickComputerMove(){
+    
+    while(true){
+        var m = Math.floor(Math.random()*8)
+        if (gameState[m]=='')//Looking for empty spot
+            break
     }
 
-    handlePlayerChange();
+    gameState[m] = currentPlayer
+    document.getElementById(m).innerHTML= currentPlayer
+}
+//Deciding who goes first
+function decideTurn(){
+    if(Math.floor(Math.random()*2) == 0){
+        return 'X'
+    }else{
+        return 'O'
+    }
 }
 
 function handleCellClick(clickedCellEvent) {
     const clickedCell = clickedCellEvent.target;
     const clickedCellIndex = parseInt(clickedCell.getAttribute('data-cell-index'));
 
+    //Check to see if current cell is an available cell and game is active. Ignores otherwise.
     if (gameState[clickedCellIndex] !== "" || !gameActive) {
         return;
     }
@@ -79,11 +120,13 @@ function handleCellClick(clickedCellEvent) {
 
 function handleRestartGame() {
     gameActive = true;
-    currentPlayer = "X";
+    currentPlayer = decideTurn();
     gameState = ["", "", "", "", "", "", "", "", ""];
     statusDisplay.style.color = "rgb(65, 65, 65)";
     statusDisplay.innerHTML = currentPlayerTurn();
     document.querySelectorAll('.cell').forEach(cell => cell.innerHTML = "");
+    if(currentPlayer == 'O')
+        handleComputerMove();
 }
 
 document.querySelectorAll('.cell').forEach(cell => cell.addEventListener('click', handleCellClick));
